@@ -69,7 +69,7 @@
                         <div class="single-post__subpost-contacts">
                             <div class="single-post__subpost-contacts-item">
                                 <div class="subpostcon-telegram">
-                                    <a href="https://ttttt.me/rgrunews" target="_blank" class="subpostcon-telegram__link">
+                                    <a href="https://ttttt.me/" target="_blank" class="subpostcon-telegram__link">
                                         <span class="subpostcon-telegram__icon">
                                             <img class="core-img" src="/template/img/core-img/telegram.svg" alt="">
                                         </span>
