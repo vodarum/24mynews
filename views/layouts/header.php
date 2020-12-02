@@ -307,7 +307,7 @@
                     </div>
                     <div class="auth-description auth-agreement__text">
                         <p>
-                            Входя на сайт, Вы принимаете условия <a class="auth-agreement__link" target="_blank" href="https://rg.ru/useragreement/">соглашения</a>.
+                            Входя на сайт, Вы принимаете условия <a class="auth-agreement__link" target="_blank" href="https://ru/useragreement/">соглашения</a>.
                         </p>
                     </div>
                 </div>
