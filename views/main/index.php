@@ -8,7 +8,7 @@
 </head>
 
 <body>
-  
+
     <!-- Registration Window Start -->
     <!-- ********** -->
     <!-- Registration Window End -->
@@ -332,55 +332,56 @@
 
                 <!-- Sidebar Start -->
                 <aside class="sidebar">
+                    <div class="sidebar__element">
+                        <!-- Breaking News Start -->
+                        <div class="main-news">
 
-                    <!-- Breaking News Start -->
-                    <div class="main-news">
-
-                        <div class="widget-title">
-                            <h5>Последние новости</h5>
-                        </div>
-
-                        <?php for ($count = $globalCount; $count < $сountNews; $count++) : ?>
-                            <?php if ($count == $globalCount + 2) : ?>
-                                <?php $globalCount = $count; ?>
-                                <?php break; ?>
-                            <?php endif; ?>
-
-                            <div class="single-news-widget">
-                                <a href="<?php echo ($data['main_news'][$count])['news_url']; ?>">
-                                    <img src="<?php echo ($data['main_news'][$count])['news_image']; ?>" alt="">
-                                </a>
-                                <div class="breaking-news-category">
-                                    <p>breaking news</p>
-                                </div>
-                                <div class="breaking-news-title">
-                                    <h2>
-                                        <a href="<?php echo ($data['main_news'][$count])['news_url']; ?>"><?php echo ($data['main_news'][$count])['news_title']; ?></a>
-                                    </h2>
-                                </div>
+                            <div class="widget-title">
+                                <h5>Последние новости</h5>
                             </div>
 
-                        <?php endfor; ?>
+                            <?php for ($count = $globalCount; $count < $сountNews; $count++) : ?>
+                                <?php if ($count == $globalCount + 2) : ?>
+                                    <?php $globalCount = $count; ?>
+                                    <?php break; ?>
+                                <?php endif; ?>
 
+                                <div class="single-news-widget">
+                                    <a href="<?php echo ($data['main_news'][$count])['news_url']; ?>">
+                                        <img src="<?php echo ($data['main_news'][$count])['news_image']; ?>" alt="">
+                                    </a>
+                                    <div class="breaking-news-category">
+                                        <p>breaking news</p>
+                                    </div>
+                                    <div class="breaking-news-title">
+                                        <h2>
+                                            <a href="<?php echo ($data['main_news'][$count])['news_url']; ?>"><?php echo ($data['main_news'][$count])['news_title']; ?></a>
+                                        </h2>
+                                    </div>
+                                </div>
+
+                            <?php endfor; ?>
+
+                        </div>
+                        <!-- Breaking News End -->
                     </div>
-                    <!-- Breaking News End -->
-
-                    <!-- Recommend Start -->
-                    <div class="recommend-area">
-                        <div class="widget-title">
-                            <h5>Рекомендуем</h5>
-                        </div>
-                        <div class="recommend-wrap">
-                            <div class="recommend-item">
-                                <div class="recommend-item__image">
-                                    <img src="/template/img/blog-img/dm-2.jpg" alt="">
-                                </div>
-                                <div class="recommend-item__description">
-                                    <a class="recommend-item__link" href="#">A new way to travel the world</a>
-                                    <div class="recommend-item__date">May 29, 2017</div>
-                                </div>
+                    <div class="sidebar__element">
+                        <!-- Recommend Start -->
+                        <div class="recommend-area">
+                            <div class="widget-title">
+                                <h5>Рекомендуем</h5>
                             </div>
-                            <!--  <div class="recommend-item">
+                            <div class="recommend-wrap">
+                                <div class="recommend-item">
+                                    <div class="recommend-item__image">
+                                        <img src="/template/img/blog-img/dm-2.jpg" alt="">
+                                    </div>
+                                    <div class="recommend-item__description">
+                                        <a class="recommend-item__link" href="#">A new way to travel the world</a>
+                                        <div class="recommend-item__date">May 29, 2017</div>
+                                    </div>
+                                </div>
+                                <!--  <div class="recommend-item">
                                 <div class="recommend-item__image">
                                     <img src="/template/img/blog-img/dm-3.jpg" alt="">
                                 </div>
@@ -389,49 +390,51 @@
                                     <div class="recommend-item__date">March 20, 2017</div>
                                 </div>
                             </div> -->
+                            </div>
                         </div>
+                        <!-- Recommend End -->
                     </div>
-                    <!-- Recommend End -->
-
-                    <!-- Advert Start -->
-                    <div class="advert-area">
-                        <div class="widget-title">
-                            <h5>Объявления</h5>
-                        </div>
-                        <div class="advert-wrap">
-                            <div class="advert-item">
-                                <!-- <div class="advert-item__image">
-        <img src="/template/img/blog-img/dm-1.jpg" alt="">
-    </div> -->
-                                <span>Объявление</span>
-                                <!-- <div class="advert-item__description">
-        <a class="advert-item__link" href="#">EU council reunites</a>
-        <div class="advert-item__date">Nov 29, 2017</div>
-    </div> -->
+                    <div class="sidebar__element">
+                        <!-- Advert Start -->
+                        <div class="advert-area">
+                            <div class="widget-title">
+                                <h5>Объявления</h5>
+                            </div>
+                            <div class="advert-wrap">
+                                <div class="advert-item">
+                                    <!-- <div class="advert-item__image">
+                                        <img src="/template/img/blog-img/dm-1.jpg" alt="">
+                                    </div> -->
+                                    <span>Объявление</span>
+                                    <!-- <div class="advert-item__description">
+                                        <a class="advert-item__link" href="#">EU council reunites</a>
+                                        <div class="advert-item__date">Nov 29, 2017</div>
+                                    </div> -->
+                                </div>
                             </div>
                         </div>
+                        <!-- Advert End -->
                     </div>
-                    <!-- Advert End -->
-
-                    <!-- Subscribe Start -->
-                    <div class="subscribe">
-                        <div class="widget-title">
-                            <h5>Подписка</h5>
+                    <div class="sidebar__element">
+                        <!-- Subscribe Start -->
+                        <div class="subscribe">
+                            <div class="widget-title">
+                                <h5>Подписка</h5>
+                            </div>
+                            <form method="post" action="" class="subform">
+                                <div class="form-field">
+                                    <input class="textfield" type="text" maxlength="24" name="4879ad6d9af99c5254ff0f6f7b07a7e4" placeholder="Имя">
+                                </div>
+                                <div class="form-field">
+                                    <input class="textfield" type="email" name="email" maxlength="128" placeholder="Ваш e-mail">
+                                </div>
+                                <div class="form-field">
+                                    <input class="button-subscribe" type="submit" value="Подписаться">
+                                </div>
+                            </form>
                         </div>
-                        <form method="post" action="" class="subform">
-                            <div class="form-field">
-                                <input class="textfield" type="text" maxlength="24" name="4879ad6d9af99c5254ff0f6f7b07a7e4" placeholder="Имя">
-                            </div>
-                            <div class="form-field">
-                                <input class="textfield" type="email" name="email" maxlength="128" placeholder="Ваш e-mail">
-                            </div>
-                            <div class="form-field">
-                                <input class="button-subscribe" type="submit" value="Подписаться">
-                            </div>
-                        </form>
+                        <!-- Subscribe End -->
                     </div>
-                    <!-- Subscribe End -->
-
                 </aside>
                 <!-- Sidebar End -->
 

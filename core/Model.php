@@ -5,7 +5,7 @@ require_once(ROOT . '/components/Db.php');
 
 class Model
 {
-	
+
 	// Родительский метод получения данных из БД (нужен, если в наследниках будем переопределять)
 	/* public function getData()
 	{
@@ -33,6 +33,25 @@ class Model
 		}
 
 		return $menuList;
+	}
+
+	public function getCityList()
+	{
+		$cityList = array();
+		$db = Db::getConnection();
+
+		$sql = 'SELECT city FROM region WHERE status=1';
+
+		$result = $db->prepare($sql);
+		$result->execute();
+
+		$i = 0;
+		while ($row = $result->fetch()) {
+			$cityList[$i]['name'] = $row['city'];
+			$i++;
+		}
+
+		return $cityList;
 	}
 
 	/* Отладка */

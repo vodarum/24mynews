@@ -226,7 +226,7 @@ class News extends Model
 
 
     // Метод, получающий одну новость
-    public static function getNewsItem($category, $url)
+    public static function getNewsItem($url)
     {
         $db = Db::getConnection();
         $newsItem = array();
@@ -234,7 +234,7 @@ class News extends Model
         $result = $db->query('SELECT news_category.title AS category_title, news_category.name AS category_name, '
             . 'news.id AS news_id, news.title AS news_title, content, news.url AS news_url, news_category.url '
             . 'AS news_category_url, news.subcategory AS subcategory_name, DATE_FORMAT(news.date, "%d.%m.%Y") AS news_date, '
-            . 'news.image AS news_image FROM news_category JOIN news ON news.url=\'http://24mynews.ru/' . $category . '/article/' . $url . '\''
+            . 'news.image AS news_image FROM news_category JOIN news ON news.url=\'http://24mynews.ru/article/' . $url . '\''
             . ' AND news_category.name=news.category');
 
         $row = $result->fetch();
@@ -288,5 +288,68 @@ class News extends Model
         $newsItem['news_image'] = $row['news_image'];
 
         return $newsItem;
+    }
+
+    public static function getNewsByRegion($region_id, $count = 12)
+    {
+        $db = Db::getConnection();
+        $newsList = array();
+
+        $sql = 'SELECT region.name AS region, region.city AS city, news_category.title AS category_title, '
+            . 'news.category AS news_category, news.id AS news_id, news.title AS news_title, short_content, '
+            . 'news.url AS news_url, news_category.url AS news_category_url, '
+            . 'DATE_FORMAT(news.date, "%d.%m.%Y") AS news_date, news.image AS news_image, importance '
+            . 'FROM news '
+            . 'JOIN region ON news.region_id=:region_id AND news.region_id=region.id '
+            . 'JOIN news_category ON news_category.name=news.category '
+            . 'ORDER BY news_date DESC LIMIT :count';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':region_id', $region_id, PDO::PARAM_INT);
+        $result->bindParam(':count', $count, PDO::PARAM_INT);
+        $result->execute();
+
+        $i = 0;
+        while ($row = $result->fetch()) {
+            $newsList[$i]['region'] = $row['region'];
+            $newsList[$i]['city'] = $row['city'];
+            $newsList[$i]['category_title'] = $row['category_title'];
+            $newsList[$i]['news_category'] = $row['news_category'];
+            $newsList[$i]['news_id'] = $row['news_id'];
+            $newsList[$i]['news_title'] = $row['news_title'];
+            $newsList[$i]['short_content'] = $row['short_content'];
+            $newsList[$i]['news_url'] = $row['news_url'];
+            $newsList[$i]['news_category_url'] = $row['news_category_url'];
+            $newsList[$i]['news_date'] = $row['news_date'];
+            $newsList[$i]['news_image'] = $row['news_image'];
+            $newsList[$i]['importance'] = $row['importance'];
+            $i++;
+        }
+
+        return $newsList;
+    }
+
+    public static function getTitleList($substrNewsTitle = '')
+    {
+        $newsTitleList = array();
+        $db = Db::getConnection();
+
+        $sql = 'SELECT id, title, url, date, image FROM news WHERE title LIKE CONCAT("%", :substrNewsTitle, "%")';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':substrNewsTitle', $substrNewsTitle, PDO::PARAM_STR);
+        $result->execute();
+
+        $i = 0;
+        while ($row = $result->fetch()) {
+            $newsTitleList[$i]['id'] = $row['id'];
+            $newsTitleList[$i]['title'] = $row['title'];
+            $newsTitleList[$i]['url'] = $row['url'];
+            $newsTitleList[$i]['date'] = $row['date'];
+            $newsTitleList[$i]['image'] = $row['image'];
+            $i++;
+        }
+
+        return $newsTitleList;
     }
 }

@@ -26,7 +26,14 @@
                     <div class="h-menu__item">
                         <div class="h-menu__geolocation">
                             <div class="h-menu__name-region">
-                                <a class="h-menu__select-region" id="select-region">Волгоград</a>
+                                <?php if (isset($_COOKIE['regInfo'])) : ?>
+                                    <?php $regInfo = unserialize($_COOKIE['regInfo']); ?>
+                                <?php endif; ?>
+                                <?php if (isset($regInfo)) : ?>
+                                    <span class="h-menu__select-region" id="select_region"><?php echo $regInfo['city']; ?></span>
+                                <?php else : ?>
+                                    <span class="h-menu__select-region" id="select_region">Россия</span>
+                                <?php endif; ?>
                             </div>
                             <div class="h-menu__geolocation-window" id="geolocation-window">
                                 <div class="window__close-cross">
@@ -34,7 +41,13 @@
                                 </div>
                                 <div class="h-menu__geolocation-window-wrap">
                                     <div class="geolocation-window__current-region">
-                                        <p>Текущий регион: Волгоград</p>
+                                        <p>Текущий регион:
+                                            <?php if (isset($regInfo)) : ?>
+                                                <span id="current_region"><?php echo $regInfo['city']; ?></span>
+                                            <?php else : ?>
+                                                <span id="current_region">Россия</span>
+                                            <?php endif; ?>
+                                        </p>
                                     </div>
                                     <div class="h-menu__geolocation-window-inner">
                                         <div class="geolocation-window__item">
@@ -42,50 +55,30 @@
                                                 <div class="select-region-text">
                                                     <p>Выберите интересующий регион:</p>
                                                 </div>
-                                                <div class="select-region-list">
+                                                <div class="select-region-list" id="region_list">
                                                     <div class="select-region-col">
-                                                        <div class="select-region-row">
-                                                            <a class="top-city" href="#">Москва</a>
-                                                        </div>
-                                                        <div class="select-region-row">
-                                                            <a class="top-city" href="#">Санкт-Петербург</a>
-                                                        </div>
-                                                        <div class="select-region-row">
-                                                            <a class="top-city" href="#">Казань</a>
-                                                        </div>
-                                                        <div class="select-region-row">
-                                                            <a class="top-city" href="#">Ростов-на-Дону</a>
-                                                        </div>
-                                                        <div class="select-region-row">
-                                                            <a class="top-city" href="#">Краснодар</a>
-                                                        </div>
+                                                        <?php for ($i = 0, $count = count($data['city']); $i < 5; $i++) : ?>
+                                                            <div class="select-region-row">
+                                                                <span class="top-city"><?php echo ($data['city'][$i])['name']; ?></span>
+                                                            </div>
+                                                        <?php endfor; ?>
                                                     </div>
                                                     <div class="select-region-col">
-                                                        <div class="select-region-row">
-                                                            <a class="top-city" href="#">Владивосток</a>
-                                                        </div>
-                                                        <div class="select-region-row">
-                                                            <a class="top-city" href="#">Новосибирск</a>
-                                                        </div>
-                                                        <div class="select-region-row">
-                                                            <a class="top-city" href="#">Самара</a>
-                                                        </div>
-                                                        <div class="select-region-row">
-                                                            <a class="top-city" href="#">Уфа</a>
-                                                        </div>
-                                                        <div class="select-region-row">
-                                                            <a class="top-city" href="#">Челябинск</a>
-                                                        </div>
+                                                        <?php for ($i = 5, $count = count($data['city']); $i < 10; $i++) : ?>
+                                                            <div class="select-region-row">
+                                                                <span class="top-city"><?php echo ($data['city'][$i])['name']; ?></span>
+                                                            </div>
+                                                        <?php endfor; ?>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="geolocation-window__item geolocation-window__item_down">
-                                            <div class="geolocation-window__input-region">
+                                            <div class="geolocation-window__input-region" id="input_region">
                                                 <div class="input-region-text">
-                                                    <p>Если вы не знаете, к какому Федеральному округу принадлежит город, введите его название в поле:</p>
+                                                    <p>Введите название города в поле:</p>
                                                 </div>
-                                                <input class="input-region-area" type="text" maxlength="32" placeholder="Введите город...">
+                                                <input class="input-region-area" type="text" name="region" autocomplete="off" maxlength="32" placeholder="Введите город...">
                                             </div>
                                         </div>
                                     </div>
@@ -94,10 +87,14 @@
 
                             <?php foreach ($data['menu'] as $menuItem) : ?>
                                 <?php if ($menuItem['name'] == 'region') : ?>
-
-                                    <div class="h-menu__news-region">
-                                        <a href="<?php echo $menuItem['url']; ?>">Новости региона</a>
-                                    </div>
+                                    <!-- -------------------------------------- -->
+                                    <?php if (isset($regInfo)) : ?>
+                                        <div class="h-menu__news-region">
+                                            <a href="<?php echo $menuItem['url'], '/', $regInfo['transliteration']; ?>">Новости региона</a>
+                                        </div>
+                                    <?php else : ?>
+                                        <div class="h-menu__news-region h-menu__no-region"></div>
+                                    <?php endif; ?>
 
                                     <?php break; ?>
                                 <?php endif; ?>
@@ -117,13 +114,14 @@
                                 <div class="search-window__inner">
                                     <div class="search-window__inner-up">
                                         <div class="search-window__inner-up-item_left">
-                                            <form class="search-window__search-form" action="">
+                                            <form class="search-window__search-form" action="http://24mynews.ru/loadsearch">
                                                 <fieldset class="search-window__search-fieldset">
                                                     <label class="search-field search-field__input-text-wrap" for="">
-                                                        <input class="search-field__input-text" type="text" id="searchInput" value="" placeholder="Введите запрос...">
+                                                        <input class="search-field__input-text" type="text" name="search" autocomplete="off" placeholder="Поиск">
                                                     </label>
                                                     <label class="search-field search-field__input-submit-wrap" for="">
-                                                        <input class="search-field__input-submit" type="submit" value="Найти">
+                                                        <input class="search-field__input-submit" type="submit">
+                                                        <!-- <span class="search-field__input-submit">Найти</span> -->
                                                     </label>
                                                 </fieldset>
                                             </form>
@@ -137,7 +135,7 @@
                                         </div>
                                     </div>
                                     <div class="search-window__inner-down">
-                                        <div class="search-window__popular-area">
+                                        <!-- <div class="search-window__popular-area">
                                             <div class="search-window__popular-row">
                                                 <div class="search-window__popular-title">
                                                     Сегодня чаще всего ищут:
@@ -160,7 +158,7 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <!-- Search Modal Window -->
@@ -170,28 +168,24 @@
                                     <img class="core-img" src="/template/img/core-img/location.svg" alt="">
                                 </a>
                             </div>
-                            <!-- <div class="h-menu__services-item h-menu__login" id="h-menu__log">
-                                <span class="" id="">
-                                    <img class="core-img" src="" alt="">
-                                    <p></p>
-                                </span>
-                            </div> -->
-                            <?php if (!LOGGED) : ?>
-                                <div class="h-menu__services-item h-menu__login" id="h-menu__log">
-                                    <!-- submit -->
-                                    <span class="h-menu__login-link" id="h-menu__login-link">
-                                        <img class="core-img" src="/template/img/core-img/login.svg" alt="">
-                                        <p>Войти</p>
-                                    </span>
-                                </div>
-                                <? else : ?>
-                                <div class="h-menu__services-item h-menu__logout" id="h-menu__log">
-                                    <span class="h-menu__logout-link" id="h-menu__logout-link">
-                                        <img class="core-img" src="/template/img/core-img/logout.svg" alt="">
-                                        <p>Выйти</p>
-                                    </span>
-                                </div>
-                            <?php endif; ?>
+                            <div class="h-menu__services-item h-menu__log">
+                                <?php if (!LOGGED) : ?>
+                                    <div class="h-menu__login">
+                                        <!-- submit -->
+                                        <span class="h-menu__login-link">
+                                            <img class="core-img" src="/template/img/core-img/login.svg" alt="">
+                                            <p>Войти</p>
+                                        </span>
+                                    </div>
+                                    <? else : ?>
+                                    <div class="h-menu__logout">
+                                        <span class="h-menu__logout-link">
+                                            <img class="core-img" src="/template/img/core-img/logout.svg" alt="">
+                                            <p>Выйти</p>
+                                        </span>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                     <div class="menu-toggle-wrap">
@@ -217,7 +211,7 @@
                 <div class="authentication-window__title-area-item item-1" id="auth-title-item-1">
                     <div class="item-title">Войти</div>
                 </div>
-                <div class="authentication-window__title-area-item_underline" style="left: 122px; width: 45px;"></div>
+                <div class="authentication-window__title-area-item_underline"></div>
             </div>
             <div class="authentication-window__content">
                 <div class="auth-content-item item-0" id="auth-content-item-0">
@@ -230,10 +224,10 @@
 
                         <form class="auth-login__form-inner">
                             <div class="form-field">
-                                <input class="textfield textfield_for-auth registration" type="text" maxlength="24" name="nameUser" placeholder="Имя">
+                                <input class="textfield textfield_for-auth registration" type="text" autocomplete="off" maxlength="24" name="nameUser" placeholder="Имя">
                             </div>
                             <div class="form-field">
-                                <input class="textfield textfield_for-auth registration" type="text" maxlength="24" name="surnameUser" placeholder="Фамилия">
+                                <input class="textfield textfield_for-auth registration" type="text" autocomplete="off" maxlength="24" name="surnameUser" placeholder="Фамилия">
                             </div>
                             <div class="form-field">
                                 <input class="textfield textfield_for-auth registration" type="email" name="emailReg" maxlength="128" placeholder="E-mail">
@@ -307,7 +301,7 @@
                     </div>
                     <div class="auth-description auth-agreement__text">
                         <p>
-                            Входя на сайт, Вы принимаете условия <a class="auth-agreement__link" target="_blank" href="https://ru/useragreement/">соглашения</a>.
+                            Входя на сайт, Вы принимаете условия <a class="auth-agreement__link" target="_blank" href="https://.ru/useragreement/">соглашения</a>.
                         </p>
                     </div>
                 </div>
@@ -318,7 +312,9 @@
 
     <?php $arrayItemRequest = explode('/', $_SERVER['REQUEST_URI']); ?>
 
-    <?php if (isset($arrayItemRequest[1])) : ?>
+    <?php if (isset($arrayItemRequest[1]) && $arrayItemRequest[1] == 'article') : ?>
+        <?php $queryTitle = $data['news_item']['category_name']; ?>
+    <?php elseif (isset($arrayItemRequest[1])) : ?>
         <?php $queryTitle = $arrayItemRequest[1]; ?>
     <?php else : ?>
         <?php $queryTitle = ''; ?>
@@ -337,21 +333,43 @@
 
     <!-- Nav Category Start -->
     <nav class="nav" id="nav-menu">
-        <div class="container">
-
-            <ul>
-                <?php foreach ($data['menu'] as $menuItem) : ?>
-                    <?php if ($menuItem['name'] != 'region') : ?>
-                        <?php if (($menuItem['name'] == 'main' && $queryTitle == '') || ($menuItem['name'] == $queryTitle)) : ?>
-                            <li><a href="<?php echo $menuItem['url']; ?>" class="active_red"><?php echo $menuItem['title']; ?></a></li>
-                        <?php else : ?>
-                            <li><a href="<?php echo $menuItem['url']; ?>"><?php echo $menuItem['title']; ?></a></li>
-                        <?php endif; ?>
+        <div class="nav-log">
+            <div class="container">
+                <div class="h-menu__services-item h-menu__log h-menu__log_mobile">
+                    <?php if (!LOGGED) : ?>
+                        <div class="h-menu__login">
+                            <span class="h-menu__login-link">
+                                <img class="core-img" src="/template/img/core-img/login.svg" alt="">
+                                <p>Войти</p>
+                            </span>
+                        </div>
+                        <? else : ?>
+                        <div class="h-menu__logout">
+                            <span class="h-menu__logout-link">
+                                <img class="core-img" src="/template/img/core-img/logout.svg" alt="">
+                                <p>Выйти</p>
+                            </span>
+                        </div>
                     <?php endif; ?>
-                <?php endforeach; ?>
-            </ul>
-
+                </div>
+            </div>
         </div>
+        <div class="nav-menu-list">
+            <div class="container">
+                <ul>
+                    <?php foreach ($data['menu'] as $menuItem) : ?>
+                        <?php if ($menuItem['name'] != 'region') : ?>
+                            <?php if (($menuItem['name'] == 'main' && $queryTitle == '') || ($menuItem['name'] == $queryTitle)) : ?>
+                                <li><a href="<?php echo $menuItem['url']; ?>" class="active_red"><?php echo $menuItem['title']; ?></a></li>
+                            <?php else : ?>
+                                <li><a href="<?php echo $menuItem['url']; ?>"><?php echo $menuItem['title']; ?></a></li>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </div>
+
     </nav>
     <!-- Nav Category End -->
 
@@ -397,14 +415,14 @@
                         <ul>
                             <?php foreach ($data['subcat_list'] as $subcategory) : ?>
                                 <?php if (isset($querySubtitle) && $subcategory['name'] ==  $querySubtitle) : ?>
-                                    <li>
-                                        <a href="<?php echo $subcategory['url']; ?>" class="active_red" style="text-transform: none;">
+                                    <li class="subcat-menu-item">
+                                        <a href="<?php echo $subcategory['url']; ?>" class="active_red">
                                             <?php echo $subcategory['title']; ?>
                                         </a>
                                     </li>
                                 <?php else : ?>
-                                    <li>
-                                        <a href="<?php echo $subcategory['url']; ?>" style="text-transform: none;">
+                                    <li class="subcat-menu-item">
+                                        <a href="<?php echo $subcategory['url']; ?>">
                                             <?php echo $subcategory['title']; ?>
                                         </a>
                                     </li>
@@ -428,5 +446,7 @@
 <!-- User Scripts -->
 <script src="/template/js/user.js"></script>
 <script src="/template/js/modal-window.js"></script>
+<script src="/template/js/region.js"></script>
+<script src="/template/js/search.js"></script>
 
 </html>

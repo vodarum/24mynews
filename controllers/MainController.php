@@ -12,7 +12,8 @@ class MainController extends Controller
         public function actionIndex()
         {
                 $data = array();
-                $data['menu'] = parent::actionIndex();
+                $data['menu'] = parent::actionIndex()['menuList'];
+                $data['city'] = parent::actionIndex()['cityList'];
 
                 $data['main_news'] = News::getNewsList(null, null, 'main');
 
@@ -20,7 +21,7 @@ class MainController extends Controller
                 foreach ($data['menu'] as $oneCategory) {
                         $data['news_list'][$oneCategory['name']] = News::getNewsList($oneCategory['name'], null, '', 5);
                 }
-				
+
                 $this->view->generate('main/index.php', 'template.php', $data);
         }
 }

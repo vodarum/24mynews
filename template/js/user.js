@@ -29,10 +29,13 @@ $('body').on('click', '#submitLogin', function(e) {
                 $('#overlay-opacity').css('display', 'none');
                 $('#authentication-window').css('display', 'none');
 
-                $("#h-menu__log span").attr('class', data.valueLayout['nameClassOrId']);
-                $("#h-menu__log span").attr('id', data.valueLayout['nameClassOrId']);
-                $("#h-menu__log img").attr('src', data.valueLayout['pathImg']);
-                $("#h-menu__log p").html(data.valueLayout['textP']);
+
+                $(".h-menu__log").html(`<div class="${data.valueLayout['nameClass']}">
+                                            <span class="${data.valueLayout['nameClass']}-link">
+                                                <img class="core-img" src="${data.valueLayout['pathImg']}" alt="">
+                                                <p>${data.valueLayout['textP']}</p>
+                                            </span>
+                                        </div>`);
 
                 /* Dottes */
                 $("#reload_comments").load('http://24mynews.ru/comment/get');
@@ -140,7 +143,7 @@ $('button[name="submitReg"]').click(function(e) {
 /* Выход */
 
 /* $('#h-menu__logout-link').click(function(e) */
-$('body').on('click', '#h-menu__logout-link', function(e) {
+$('body').on('click', '.h-menu__logout-link', function(e) {
 
     $.ajax({
         url: 'http://24mynews.ru/user/logout',
@@ -148,10 +151,17 @@ $('body').on('click', '#h-menu__logout-link', function(e) {
         success: function(data) {
             if (data.status) {
 
-                $("#h-menu__log span").attr('class', data.valueLayout['nameClassOrId']);
-                $("#h-menu__log span").attr('id', data.valueLayout['nameClassOrId']);
-                $("#h-menu__log img").attr('src', data.valueLayout['pathImg']);
-                $("#h-menu__log p").html(data.valueLayout['textP']);
+                $(".h-menu__log").html(`<div class="${data.valueLayout['nameClass']}">
+                                            <span class="${data.valueLayout['nameClass']}-link">
+                                                <img class="core-img" src="${data.valueLayout['pathImg']}" alt="">
+                                                <p>${data.valueLayout['textP']}</p>
+                                            </span>
+                                        </div>`);
+
+                /* $(".h-menu__log span").attr('class', data.valueLayout['nameClass']);
+                $(".h-menu__log span").attr('id', data.valueLayout['nameClass.OrId']);
+                $(".h-menu__log img").attr('src', data.valueLayout['pathImg']);
+                $(".h-menu__log p").html(data.valueLayout['textP']); */
 
                 /* Dottes */
                 $("#reload_comments").load('http://24mynews.ru/comment/get');

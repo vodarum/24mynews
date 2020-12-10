@@ -18,7 +18,11 @@ class Controller
 	public function actionIndex()
 	{
 		$menuList = array();
+		$cityList = array();
 		$menuList = $this->model->getMenuList();
-		return $menuList;
+		$cityList = $this->model->getCityList();
+		shuffle($cityList);
+
+		return array('menuList' => $menuList, 'cityList' => $cityList);
 	}
 }

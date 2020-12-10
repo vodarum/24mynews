@@ -69,7 +69,7 @@ class UserController extends Controller
                         $response = [
                                 'status' => true,
                                 'valueLayout' => [
-                                        'nameClassOrId' => 'h-menu__logout-link',
+                                        'nameClass' => 'h-menu__logout-link',
                                         'pathImg' => '/template/img/core-img/logout.svg',
                                         'textP' => 'Выйти'
                                 ]
@@ -87,20 +87,18 @@ class UserController extends Controller
 
                 unset($_SESSION['user']);
 
-                /* $nameClassOrId = 'h-menu__login-link';
-                $pathImg = '/template/img/core-img/login.svg';
-                $textP = 'Войти'; */
-
                 $response = [
                         'status' => true,
                         'valueLayout' => [
-                                'nameClassOrId' => 'h-menu__login-link',
+                                'nameClass' => 'h-menu__login-link',
                                 'pathImg' => '/template/img/core-img/login.svg',
                                 'textP' => 'Войти'
                         ]
                 ];
 
                 echo json_encode($response);
+
+                return true;
         }
 
         public function actionRegister()
